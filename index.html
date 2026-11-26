@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal - Send, Spend &amp; Manage</title>
+    <style>
+        :root {
+            --pp-navy: #003087;
+            --pp-blue: #0070ba;
+            --pp-sky: #4db8ff;
+            --pp-dark: #0b0c0e;
+            --pp-text: #111111;
+            --pp-muted: #5f6368;
+            --pp-light-bg: #f5f7fa;
+            --pp-border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: var(--pp-text);
+            scroll-behavior: smooth;
+        }
+
+        /* Top Navbar */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--pp-border);
+        }
+
+        .header-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand-wordmark {
+            font-size: 24px;
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .brand-wordmark .dark {
+            color: var(--pp-navy);
+        }
+
+        .brand-wordmark .light {
+            color: var(--pp-blue);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-outline-sm {
+            padding: 8px 16px;
+            border-radius: 24px;
+            border: 1.5px solid var(--pp-navy);
+            color: var(--pp-navy);
+            background: transparent;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-sm:hover {
+            background-color: #eef4fb;
+        }
+
+        .btn-solid-sm {
+            padding: 9px 18px;
+            border-radius: 24px;
+            border: none;
+            background-color: var(--pp-navy);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-solid-sm:hover {
+            background-color: #002366;
+        }
+
+        /* Section 1: Send Hero (Deep Blue) */
+        .send-section {
+            background-color: var(--pp-navy);
+            color: #ffffff;
+            padding: 52px 20px;
+        }
+
+        .section-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .send-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .send-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+                gap: 40px;
+            }
+        }
+
+        .send-section h1 {
+            font-size: clamp(34px, 6vw, 48px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: -0.6px;
+        }
+
+        .send-section p {
+            font-size: clamp(16px, 2.5vw, 19px);
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.92);
+            max-width: 520px;
+            margin-bottom: 24px;
+        }
+
+        .btn-send-money {
+            display: inline-block;
+            background-color: #3a5fa8;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 28px;
+            padding: 13px 26px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-send-money:hover {
+            background-color: #4b73c2;
+            transform: translateY(-1px);
+        }
+
+        .media-frame {
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.08);
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Section 2: All in the PayPal App (Sky Blue) */
+        .app-banner-section {
+            background-color: var(--pp-sky);
+            color: var(--pp-text);
+            padding: 56px 20px;
+            text-align: center;
+        }
+
+        .app-banner-section h2 {
+            font-size: clamp(36px, 7vw, 54px);
+            font-weight: 800;
+            line-height: 1.06;
+            letter-spacing: -1px;
+            max-width: 680px;
+            margin: 0 auto 18px auto;
+        }
+
+        .app-banner-section p {
+            font-size: clamp(15px, 2.4vw, 18px);
+            line-height: 1.5;
+            max-width: 620px;
+            margin: 0 auto 26px auto;
+            color: #111827;
+        }
+
+        .app-media-box {
+            max-width: 560px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.35);
+            min-height: 160px;
+        }
+
+        .app-media-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Section 3: Load Your Digital Wallet */
+        .wallet-section {
+            background-color: #ffffff;
+            padding: 56px 20px;
+        }
+
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .wallet-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
+        .wallet-section h2 {
+            font-size: clamp(32px, 5.5vw, 44px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.6px;
+            margin-bottom: 14px;
+            color: var(--pp-text);
+        }
+
+        .wallet-section p {
+            font-size: 16px;
+            line-height: 1.55;
+            color: var(--pp-muted);
+            margin-bottom: 24px;
+            max-width: 480px;
+        }
+
+        .btn-wallet-pill {
+            display: inline-block;
+            background-color: #eef1f6;
+            color: var(--pp-text);
+            border: none;
+            border-radius: 28px;
+            padding: 13px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-wallet-pill:hover {
+            background-color: #dfe5ee;
+        }
+
+        .wallet-media-card {
+            border-radius: 22px;
+            overflow: hidden;
+            background-color: var(--pp-light-bg);
+            min-height: 180px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .wallet-media-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Mature Dark Footer */
+        .site-footer {
+            background-color: var(--pp-dark);
+            color: #ffffff;
+            padding: 44px 20px 36px 20px;
+        }
+
+        .footer-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .footer-nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 24px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-nav-row a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .footer-nav-row a:hover {
+            text-decoration: underline;
+        }
+
+        .region-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .footer-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            margin: 20px 0;
+        }
+
+        .footer-meta-top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 14px;
+        }
+
+        .footer-legal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 22px;
+        }
+
+        .footer-legal-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .footer-legal-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-notice {
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.78);
+            margin-top: 18px;
+            max-width: 780px;
+        }
+
+        .footer-disclaimer {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.72);
+            margin-top: 22px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="brand-wordmark">
+                <span class="dark">Pay</span><span class="light">Pal</span>
+            </a>
+            <div class="header-actions">
+                <a href="dashboard.html" class="btn-outline-sm" id="navLoginBtn">Log In</a>
+                <a href="login.html" class="btn-solid-sm" id="navSignupBtn">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="send" class="send-section">
+        <div class="section-inner send-grid">
+            <div>
+                <h1>Send</h1>
+                <p>Search by name, username, email, or phone to send quickly, easily, and securely.</p>
+                <a href="login.html" class="btn-send-money" id="heroActionBtn">Send Money</a>
+            </div>
+
+            <div class="media-frame">
+                <img src="send.jpeg" alt="Send money with PayPal" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </section>
+
+    <section class="app-banner-section">
+        <div class="section-inner">
+            <h2>All in the PayPal app</h2>
+            <p>Easily and securely spend, send, and manage your transactions—all in one place. Download the app on your device or continue to your account.</p>
+
+            <div class="app-media-box">
+                <img src="Pay.jpeg" alt="PayPal mobile app preview" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </section>
+
+    <section id="wallet" class="wallet-section">
+        <div class="section-inner wallet-grid">
+            <div>
+                <h2>Load your digital wallet</h2>
+                <p>Debit cards. Credit cards. Bank accounts. Securely store all your preferred ways to pay and track your PayPal transactions.</p>
+                <a href="dashboard.html" class="btn-wallet-pill">Add Payment Methods</a>
+            </div>
+
+            <div class="wallet-media-card">
+                <img src="digital.jpeg" alt="Digital Wallet and PayPal checkout preview" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">PayPal</div>
+
+            <div class="footer-nav-row">
+                <a href="#send">Help</a>
+                <a href="#send">Contact</a>
+                <a href="#wallet">Fees</a>
+                <a href="#wallet">Security</a>
+                <a href="#send">Features</a>
+                <a href="#wallet">Shop</a>
+            </div>
+
+            <div class="region-pill">
+                <span>🌐</span>
+                <span>United States</span>
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="footer-nav-row" style="margin-bottom: 12px;">
+                <a href="#send">About</a>
+                <a href="#send">Newsroom</a>
+                <a href="#send">Jobs</a>
+                <a href="#wallet">Developers</a>
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="footer-meta-top">
+                <span>© 1999–2026 All rights reserved.</span>
+            </div>
+
+            <div class="footer-legal-links">
+                <a href="#">Accessibility</a>
+                <a href="#">Cookies</a>
+                <a href="#">Privacy</a>
+                <a href="#">Legal</a>
+            </div>
+
+            <p class="footer-notice">
+                PayPal Pte. Ltd. is licensed by the Monetary Authority of Singapore as a Major Payment Institution under the Payment Services Act 2019.
+            </p>
+
+            <p class="footer-disclaimer">
+                All screen images are for illustrative purposes only.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedEmail = (localStorage.getItem('user_email') || '').trim();
+            const savedPassword = localStorage.getItem('user_password') || '';
+            const hasExistingAccount = Boolean(savedEmail && savedPassword);
+
+            const navSignupBtn = document.getElementById('navSignupBtn');
+            const navLoginBtn = document.getElementById('navLoginBtn');
+            const heroActionBtn = document.getElementById('heroActionBtn');
+
+            if (hasExistingAccount) {
+                navSignupBtn.textContent = 'Dashboard';
+                navSignupBtn.href = 'dashboard.html';
+                navLoginBtn.textContent = 'Log In';
+                navLoginBtn.href = 'dashboard.html';
+                heroActionBtn.href = 'dashboard.html';
+
+                navSignupBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    alert('An account is already registered on this device (' + savedEmail + '). Redirecting to Log In / Dashboard.');
+                    window.location.href = 'dashboard.html';
+                });
+            }
+
+            document.querySelectorAll('img').forEach(img => {
+                const srcAttr = (img.getAttribute('src') || '').trim();
+                if (!srcAttr) {
+                    img.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal - Account Setup</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            min-height: 100dvh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            height: 100dvh;
+            position: relative;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 36px 24px;
+            background-color: #ffffff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .content-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .paypal-logo {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 24px;
+        }
+
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .back-arrow {
+            font-size: 22px;
+            color: #000000;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .step-indicators {
+            display: flex;
+            gap: 6px;
+        }
+
+        .step-bar {
+            width: 28px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: #e5e7eb;
+        }
+
+        .step-bar.active {
+            background-color: #0070ba;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #6c737a;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .location-info {
+            font-size: 14px;
+            color: #6c737a;
+            margin-bottom: 28px;
+        }
+
+        .location-info span {
+            color: #0070ba;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+
+        .input-group {
+            position: relative;
+            width: 100%;
+            border: 2px solid #0070ba;
+            border-radius: 12px;
+            padding: 12px 16px;
+            background-color: #ffffff;
+            margin-bottom: 14px;
+        }
+
+        .input-group.secondary {
+            border-color: #d1d5db;
+        }
+
+        .input-group.secondary:focus-within {
+            border-color: #0070ba;
+        }
+
+        .input-label {
+            font-size: 12px;
+            color: #515151;
+            margin-bottom: 4px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #000000;
+            background: transparent;
+            font-family: inherit;
+        }
+
+        .form-error {
+            color: #c62828;
+            font-size: 13px;
+            min-height: 18px;
+            margin-top: 4px;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #6c737a;
+            line-height: 1.4;
+            margin-top: 4px;
+        }
+
+        .btn-next {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            width: 100%;
+            padding: 16px 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s ease;
+            margin-top: 16px;
+        }
+
+        .btn-next:hover {
+            background-color: #222222;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border-left-color: #0070ba;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Screen 1: Email & Password Setup View -->
+        <div id="screen-email" class="screen active">
+            <div class="content-top">
+                <svg class="paypal-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#003087" d="M19.336 5.372c-.938-.938-2.618-1.572-5.118-1.572H7.28c-.446 0-.83.33-.893.773L3.804 20.353a.563.563 0 0 0 .556.647h3.766l.812-5.143.08-.435c.063-.442.447-.773.893-.773h1.83c3.558 0 6.34-1.442 7.156-5.836.31-1.657-.02-2.956-1.061-3.994z"/>
+                    <path fill="#0070ba" d="M20.252 6.848c-.411-.85-1.04-1.564-1.854-2.12-.916-.628-2.046-1.01-3.37-1.134h-6.19c-.446 0-.83.33-.893.773L5.78 17.584c-.063.442.224.843.67.843h3.518l.812-5.143.08-.435c.063-.442.447-.773.893-.773h1.83c3.048 0 5.426-1.236 6.13-5.002.04-.216.066-.43.08-.636z"/>
+                    <path fill="#009cde" d="M17.478 7.766c-.328 1.751-1.884 3.12-4.135 3.12h-1.83c-.446 0-.83.33-.893.773l-.892 5.65-.183 1.157c-.063.442.224.843.67.843h2.954c.446 0 .83-.33.893-.773l.08-.435.812-5.143.08-.435c.063-.442.447-.773.893-.773h.466c2.251 0 4.07-1.05 4.59-3.792.203-1.085-.01-1.956-.582-2.613-.393-.455-.918-.813-1.536-1.077z"/>
+                </svg>
+
+                <h1>Let’s get started</h1>
+
+                <div class="location-info">
+                    <span id="countryName">United States</span> <span id="countryToggle">Change</span>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="emailField">Enter your email</label>
+                    <input type="email" id="emailField" class="input-field" placeholder="name@example.com" autofocus>
+                </div>
+
+                <div class="input-group secondary">
+                    <label class="input-label" for="passwordField">Create a password</label>
+                    <input type="password" id="passwordField" class="input-field" placeholder="Enter password">
+                </div>
+
+                <div id="emailErrorMsg" class="form-error"></div>
+            </div>
+
+            <div>
+                <button id="toPhoneBtn" class="btn-next">Next</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Phone Number & Balance Input View -->
+        <div id="screen-phone" class="screen">
+            <div class="content-top">
+                <div class="top-nav">
+                    <a href="#" id="toEmailBtn" class="back-arrow">&#8592;</a>
+                    <div class="step-indicators">
+                        <div class="step-bar active"></div>
+                        <div class="step-bar active"></div>
+                        <div class="step-bar"></div>
+                        <div class="step-bar"></div>
+                    </div>
+                </div>
+
+                <h1>Set up balance &amp; phone</h1>
+                <p class="subtitle">Enter your mobile number and balance on your Account.</p>
+
+                <div class="input-group">
+                    <label class="input-label" for="balanceField">Initial Account Balance ($)</label>
+                    <input type="number" step="0.01" min="0" id="balanceField" class="input-field" placeholder="0.00">
+                </div>
+
+                <div class="input-group secondary">
+                    <label class="input-label" for="phoneField">Mobile number</label>
+                    <input type="tel" id="phoneField" class="input-field" value="+1 ">
+                </div>
+
+                <div id="phoneErrorMsg" class="form-error"></div>
+
+                <p class="disclaimer">
+                    By continuing, you confirm that you are authorized to use this phone number and agree to receive an SMS text. Carrier fees may apply.
+                </p>
+            </div>
+
+            <div>
+                <button id="submitPhoneBtn" class="btn-next">Next</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Loading View (5 seconds) -->
+        <div id="screen-loading" class="screen">
+            <div class="content-top" style="align-items: center; text-align: center; justify-content: center; height: 100%;">
+                <div class="spinner"></div>
+                <h1>Confirming your account</h1>
+                <p class="subtitle" style="margin-top: 8px;">Setting up your balance and redirecting to your dashboard...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Set to 23000.00 to prefill $23k, or 0 for normal user input
+        const DEFAULT_INITIAL_BALANCE = 23000.00;
+
+        const screenEmail = document.getElementById('screen-email');
+        const screenPhone = document.getElementById('screen-phone');
+        const screenLoading = document.getElementById('screen-loading');
+
+        const toPhoneBtn = document.getElementById('toPhoneBtn');
+        const toEmailBtn = document.getElementById('toEmailBtn');
+        const submitPhoneBtn = document.getElementById('submitPhoneBtn');
+        const countryToggle = document.getElementById('countryToggle');
+        const countryName = document.getElementById('countryName');
+
+        const emailField = document.getElementById('emailField');
+        const passwordField = document.getElementById('passwordField');
+        const balanceField = document.getElementById('balanceField');
+        const phoneField = document.getElementById('phoneField');
+        const emailErrorMsg = document.getElementById('emailErrorMsg');
+        const phoneErrorMsg = document.getElementById('phoneErrorMsg');
+
+        if (DEFAULT_INITIAL_BALANCE > 0) {
+            balanceField.value = DEFAULT_INITIAL_BALANCE.toFixed(2);
+        }
+
+        const countries = ['United States', 'United Kingdom', 'Canada', 'Germany'];
+        let countryIndex = 0;
+
+        countryToggle.addEventListener('click', () => {
+            countryIndex = (countryIndex + 1) % countries.length;
+            countryName.textContent = countries[countryIndex];
+        });
+
+        toPhoneBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const emailVal = emailField.value.trim();
+            const passwordVal = passwordField.value;
+
+            if (!emailVal || !emailVal.includes('@')) {
+                emailErrorMsg.textContent = 'Please enter a valid email address.';
+                emailField.focus();
+                return;
+            }
+            if (!passwordVal) {
+                emailErrorMsg.textContent = 'Please create a password.';
+                passwordField.focus();
+                return;
+            }
+
+            emailErrorMsg.textContent = '';
+            screenEmail.classList.remove('active');
+            screenPhone.classList.add('active');
+            balanceField.focus();
+        });
+
+        toEmailBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            phoneErrorMsg.textContent = '';
+            screenPhone.classList.remove('active');
+            screenEmail.classList.add('active');
+            emailField.focus();
+        });
+
+        submitPhoneBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const phoneVal = phoneField.value.trim();
+            if (!phoneVal || phoneVal === '+1') {
+                phoneErrorMsg.textContent = 'Please enter a valid mobile number.';
+                phoneField.focus();
+                return;
+            }
+
+            phoneErrorMsg.textContent = '';
+            const rawBalance = parseFloat(balanceField.value);
+            const finalBalance = Number.isNaN(rawBalance) || rawBalance < 0 ? '0.00' : rawBalance.toFixed(2);
+
+            localStorage.setItem('user_email', emailField.value.trim());
+            localStorage.setItem('user_password', passwordField.value);
+            localStorage.setItem('user_phone', phoneVal);
+            localStorage.setItem('user_country', countryName.textContent);
+            localStorage.setItem('user_paypal_balance', '0.00');
+            localStorage.setItem('user_account_balance', finalBalance);
+            localStorage.setItem('user_crypto_balance_usd', finalBalance);
+            localStorage.removeItem('user_transactions');
+            localStorage.setItem('user_is_logged_in', 'true');
+
+            alert('Account details and balance saved!');
+
+            screenPhone.classList.remove('active');
+            screenLoading.classList.add('active');
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 5000);
+        });
+    </script>
+
+</body>
+</html>
