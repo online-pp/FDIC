@@ -314,41 +314,35 @@
             document.getElementById('qrCodeImage').src = qrApiUrl;
         });
 
-        function logReceiveHistory(actionLabel) {
-            const txList = JSON.parse(localStorage.getItem('user_transactions') || '[]');
-            txList.unshift({
-                title: actionLabel,
-                meta: 'BTC Receive Address: bc1qptx...724eq',
-                amount: 'Address Shared',
-                type: 'positive'
-            });
-            localStorage.setItem('user_transactions', JSON.stringify(txList));
+        function copyToClipboardFallback(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
         }
 
         function copyAddress() {
-            navigator.clipboard.writeText(bitcoinAddress).then(() => {
-                logReceiveHistory('Copied BTC Receive Address');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(bitcoinAddress)
+                    .then(() => showToast('Address copied to clipboard!'))
+                    .catch(() => {
+                        copyToClipboardFallback(bitcoinAddress);
+                        showToast('Address copied to clipboard!');
+                    });
+            } else {
+                copyToClipboardFallback(bitcoinAddress);
                 showToast('Address copied to clipboard!');
-            }).catch(() => {
-                // Fallback for older mobile browsers
-                const tempInput = document.createElement('input');
-                tempInput.value = bitcoinAddress;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                logReceiveHistory('Copied BTC Receive Address');
-                showToast('Address copied to clipboard!');
-            });
+            }
         }
 
         function shareAddress() {
-            logReceiveHistory('Shared BTC Receive Address');
             if (navigator.share) {
                 navigator.share({
                     title: 'My Bitcoin Address',
-                    text: bitcoinAddress,
-                }).catch(err => console.log('Error sharing:', err));
+                    text: bitcoinAddress
+                }).catch(() => {});
             } else {
                 copyAddress();
             }
