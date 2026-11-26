@@ -355,7 +355,6 @@
             color: var(--text-primary);
         }
 
-        /* Compact Speed/Fee Selector */
         .speed-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -734,8 +733,8 @@
             const formattedCharge = activeTier.amount.toFixed(2);
 
             logHistoryEntry(
-                `Sell BTC (${sellState.btc} BTC for $${sellState.usd.toFixed(2)})`,
-                `Pending • ${activeTier.label} ($${formattedCharge} charge via Receive address)`,
+                `Sell BTC (${sellState.btc} BTC)`,
+                `Pending • ${activeTier.label} ($${formattedCharge} fee)`,
                 'Pending',
                 'negative'
             );
